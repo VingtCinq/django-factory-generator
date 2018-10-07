@@ -13,7 +13,7 @@ Generate (factory_boy) Model Factory for each model of your Django app
 
 ## Requirements
 
-This Django app generate factory_boy Model Factories from your installed apps, so you need to have [factory_boy](https://github.com/FactoryBoy/factory_boy) installed.
+This Django app generates factory_boy Model Factories from your installed apps, so you need to have [factory_boy](https://github.com/FactoryBoy/factory_boy) installed.
 
 
 ## Installation
@@ -58,6 +58,29 @@ Each model results in two generated files :
 + *model_factories/app_label_foo/model_foo* containing the `ModelFooFactory` class which simply extends `ModelFooFactoryBase`. This file is generated once but not overriden when you run the `generate_factories` command again.
 
 This structure gives you the ability to **override** the ModelFactory that was automatically generated. You can then edit the `ModelFooFactory` to change / edit the base fields that were generated.
+
+You can then import your model factories the following way:
+
+
+```
+# app_label/tests.py
+from django.test import TestCase
+
+from model_factories.app_label import ModelFooFactory, ModelBarFactory
+
+class FooTests(TestCase):
+
+    def test_model_factory(self):
+        modelfoo = ModelFooFactory(
+            foo='bar',
+        )
+        modelbar = ModelBarFactory(
+            bar='baz',
+        )
+        # Run your tests here
+
+```
+
 
 
 ## Settings
