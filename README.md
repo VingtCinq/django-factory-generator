@@ -6,7 +6,7 @@
 
 Generate (factory_boy) Model Factory for each model of your Django app
 
-# Changelog
+## Changelog
 
 + 1.0.0 Init project
 
