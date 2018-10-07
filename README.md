@@ -13,7 +13,7 @@ Generate (factory_boy) Model Factory for each model of your Django app
 
 ## Requirements
 
-This Django app generate factory_boy Model Factories from your installed apps, so you need to have (https://github.com/FactoryBoy/factory_boy)[factory_boy] installed.
+This Django app generate factory_boy Model Factories from your installed apps, so you need to have [factory_boy](https://github.com/FactoryBoy/factory_boy) installed.
 
 
 ## Installation
@@ -54,8 +54,8 @@ This will create a `model_factories` directory with the following structure :
 
 Each model results in two generated files :
 
-+ `model_factories/app_label_foo/base/model_foo` containing the `ModelFooFactoryBase` class definition generated from the model `ModelFoo`. This file **should not be manually edited** since it would be overriden each time the command `generate_factories` is run.
-+ `model_factories/app_label_foo/model_foo` containing the `ModelFooFactory` class which simply extends `ModelFooFactoryBase`. This file is generated once but not overriden when you run the `generate_factories` command again.
++ *model_factories/app_label_foo/base/model_foo* containing the `ModelFooFactoryBase` class definition generated from the model `ModelFoo`. This file **should not be manually edited** since it would be overriden each time the command `generate_factories` is run.
++ *model_factories/app_label_foo/model_foo* containing the `ModelFooFactory` class which simply extends `ModelFooFactoryBase`. This file is generated once but not overriden when you run the `generate_factories` command again.
 
 This structure gives you the ability to **override** the ModelFactory that was automatically generated. You can then edit the `ModelFooFactory` to change / edit the base fields that were generated.
 
