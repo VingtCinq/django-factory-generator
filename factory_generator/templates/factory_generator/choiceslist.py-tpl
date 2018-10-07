@@ -1,0 +1,1 @@
+{{field.name|upper}}_CHOICES = [e[0] for e in {{model_name}}._meta.get_field('{{field.name}}').choices]

@@ -1,0 +1,1 @@
+{{field.name}} = {{faker_class}}({{faker_kwargs|safe}})

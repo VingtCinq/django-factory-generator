@@ -1,0 +1,11 @@
+
+    @factory.post_generation
+    def {{field.name}}(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of {{field.name}} were passed in, use them
+            for item in extracted:
+                self.{{field.name}}.add(item)

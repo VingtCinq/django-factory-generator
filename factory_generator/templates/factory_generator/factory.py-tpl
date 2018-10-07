@@ -1,0 +1,11 @@
+"""
+Generated using factory_generator {{version}}. 
+"""
+
+from {{ factory_module }} import {{ factory_base_name }}
+
+
+class {{factory_name}}({{factory_base_name}}):
+    """
+    Factory class for {{model_name}}
+    """
