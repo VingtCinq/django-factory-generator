@@ -1,4 +1,4 @@
-|django-factory-generator v1.0.0 on PyPi| |MIT license| |Stable|
+|django-factory-generator v1.0.1 on PyPi| |MIT license| |Stable|
 
 django-factory-generator
 ========================
@@ -8,6 +8,9 @@ Generate (factory_boy) Model Factory for each model of your Django app
 Changelog
 ---------
 
+-  1.0.1 Add more accurate fakers for ``BigIntegerField``,
+   ``IntegerField``, ``PositiveIntegerField``,
+   ``PositiveSmallIntegerField`` and ``SmallIntegerField``
 -  1.0.0 Init project
 
 Requirements
@@ -123,7 +126,7 @@ License
 
 The project is licensed under the MIT License.
 
-.. |django-factory-generator v1.0.0 on PyPi| image:: https://img.shields.io/badge/pypi-1.0.0-green.svg
+.. |django-factory-generator v1.0.1 on PyPi| image:: https://img.shields.io/badge/pypi-1.0.1-green.svg
    :target: https://pypi.python.org/pypi/django-factory-generator
 .. |MIT license| image:: https://img.shields.io/badge/licence-MIT-blue.svg
 .. |Stable| image:: https://img.shields.io/badge/status-stable-green.svg

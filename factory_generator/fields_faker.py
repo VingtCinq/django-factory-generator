@@ -71,8 +71,14 @@ class FieldFaker:
 
 class BigIntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
-    faker_kwargs = ["provider"]
-    provider = "pyint"
+    faker_kwargs = ["provider", "min", "max"]
+    provider = "random_int"
+    
+    def get_min(self):
+        return -9223372036854775808
+
+    def get_max(self):
+        return 9223372036854775807
 
 
 class BinaryFieldFaker(FieldFaker):
@@ -219,8 +225,14 @@ class ImageFieldFaker(FieldFaker):
 
 class IntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
-    faker_kwargs = ["provider"]
-    provider = "pyint"
+    faker_kwargs = ["provider", "min", "max"]
+    provider = "random_int"
+    
+    def get_min(self):
+        return -2147483648
+
+    def get_max(self):
+        return 2147483647
 
 
 class GenericIPAddressFieldFaker(FieldFaker):
@@ -264,14 +276,26 @@ class OneToOneFieldFaker(FieldFaker):
 
 class PositiveIntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
-    faker_kwargs = ["provider"]
-    provider = "pyint"
+    faker_kwargs = ["provider", "min", "max"]
+    provider = "random_int"
+    
+    def get_min(self):
+        return 0
+
+    def get_max(self):
+        return 2147483647
 
 
 class PositiveSmallIntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
-    faker_kwargs = ["provider"]
-    provider = "pyint"
+    faker_kwargs = ["provider", "min", "max"]
+    provider = "random_int"
+    
+    def get_min(self):
+        return 0
+
+    def get_max(self):
+        return 32767
 
 
 class SlugFieldFaker(FieldFaker):
@@ -282,8 +306,14 @@ class SlugFieldFaker(FieldFaker):
 
 class SmallIntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
-    faker_kwargs = ["provider"]
-    provider = "pyint"
+    faker_kwargs = ["provider", "min", "max"]
+    provider = "random_int"
+    
+    def get_min(self):
+        return -32768
+
+    def get_max(self):
+        return 32767
 
 
 class TextFieldFaker(FieldFaker):
