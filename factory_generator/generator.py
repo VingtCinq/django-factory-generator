@@ -65,7 +65,7 @@ class FactoryFieldGenerator:
         """
         Return `True` if the field has a `choices` attribute
         """
-        return hasattr(self.field, 'choices') and len(self.field.choices) > 0
+        return hasattr(self.field, 'choices') and self.field.choices
 
     @property
     def field_class(self):
