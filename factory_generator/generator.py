@@ -45,20 +45,15 @@ class FactoryFieldGenerator:
 
     @property
     def field_faker_string(self):
+        assert self.field_class in FIELD_FAKER_MAP,(
+            'No FieldFaker defined for `%s`, specify a corresponding FieldFakerClass in `settings.FIELD_FAKER_MAP` or define a corresponding model in `settings.FACTORY_NORMALIZE_FIELD_MAP`' %
+            self.field_class
+        )
         return FIELD_FAKER_MAP[self.field_class]
 
     @property
     def field_faker_class(self):
         return import_from_string(self.field_faker_string)
-
-    @property
-    def need_timezone(self):
-        """
-        Return `True` if the current field is one of 
-        `DateTimeField`, `TimeField`, `DateField` or `DurationField' types
-        And so need to import `pytz` for the factory
-        """
-        return self.field_faker_class.need_timezone
 
     @property
     def has_choices(self):
@@ -225,6 +220,14 @@ class FactoryModelGenerator(PathMixin):
             'factory': self.factory_name
         }
 
+    def get_import_string(self, import_str):
+        arr = import_str.split('.')
+        if len(arr) == 1:
+            return "import %s" % arr[0]
+        else:
+            last_import = arr.pop()
+            return "from %s import %s" % ('.'.join(arr), last_import)
+
     @property
     def context_base(self):
         """
@@ -235,13 +238,14 @@ class FactoryModelGenerator(PathMixin):
             'model_module': self.model.__module__,
             'factory_name': self.factory_name,
             'factory_base_name': self.factory_base_name,
-            'need_timezone': False,
+            'imports': [],
             'version': VERSION,
             'fields': [],
             'choices': [],
             'unique': [],
             'unique_kwargs': ''
         }
+        imports = []
         for field in self.fields:
             factory = FactoryFieldGenerator(field, self.model)
             if factory.is_ignored:
@@ -250,12 +254,16 @@ class FactoryModelGenerator(PathMixin):
                 res['unique'].append(field.name)
             if factory.has_choices:
                 res['choices'].append(factory.render_choices_list())
-            if factory.need_timezone:
-                res['need_timezone'] = True
+            if factory.field_faker_class.imports:
+                imports += factory.field_faker_class.imports
             res['fields'].append(factory)
             if res['unique']:
                 res['unique_kwargs'] = ', '.join(
                     '%r' % key for key in res['unique']) + ','
+        imports = list(set(imports))
+        for import_ in imports:
+            import_str = self.get_import_string(import_)
+            res['imports'].append(import_str)
         return res
 
     @property

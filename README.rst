@@ -1,4 +1,4 @@
-|django-factory-generator v1.0.1 on PyPi| |MIT license| |Stable|
+|django-factory-generator v1.0.4 on PyPi| |MIT license| |Stable|
 
 django-factory-generator
 ========================
@@ -8,6 +8,10 @@ Generate (factory_boy) Model Factory for each model of your Django app
 Changelog
 ---------
 
+-  1.0.4 fix has_choices property for Django 3.0
+-  1.0.3 Remove useless print statements
+-  1.0.2 Add ``PointFieldFaker`` to support ``PointField``. Refactor the
+   way modules are imported on generated factories
 -  1.0.1 Add more accurate fakers for ``BigIntegerField``,
    ``IntegerField``, ``PositiveIntegerField``,
    ``PositiveSmallIntegerField`` and ``SmallIntegerField``
@@ -31,11 +35,11 @@ Add ``factory_generator`` to your ``INSTALLED_APPS`` settings.
 
 .. code:: python
 
-    INSTALLED_APPS = (
-        ...
-        'factory_generator',
-        ...
-    )
+   INSTALLED_APPS = (
+       ...
+       'factory_generator',
+       ...
+   )
 
 Generate factories
 ------------------
@@ -49,15 +53,15 @@ structure :
 
 ::
 
-    |__ model_factories/
-        |__ app_label_foo/
-            |__ __init__.py
-            |__ model_foo.py
-            |__ model_bar.py
-            |__ base/
-                |__ __init__.py
-                |__ model_foo.py
-                |__ model_bar.py
+   |__ model_factories/
+       |__ app_label_foo/
+           |__ __init__.py
+           |__ model_foo.py
+           |__ model_bar.py
+           |__ base/
+               |__ __init__.py
+               |__ model_foo.py
+               |__ model_bar.py
 
 Each model results in two generated files :
 
@@ -80,21 +84,21 @@ You can then import your model factories the following way:
 
 ::
 
-    # app_label/tests.py
-    from django.test import TestCase
+   # app_label/tests.py
+   from django.test import TestCase
 
-    from model_factories.app_label import ModelFooFactory, ModelBarFactory
+   from model_factories.app_label import ModelFooFactory, ModelBarFactory
 
-    class FooTests(TestCase):
+   class FooTests(TestCase):
 
-        def test_model_factory(self):
-            modelfoo = ModelFooFactory(
-                foo='bar',
-            )
-            modelbar = ModelBarFactory(
-                bar='baz',
-            )
-            # Run your tests here
+       def test_model_factory(self):
+           modelfoo = ModelFooFactory(
+               foo='bar',
+           )
+           modelbar = ModelBarFactory(
+               bar='baz',
+           )
+           # Run your tests here
 
 Settings
 --------
@@ -103,11 +107,11 @@ Here are all the settings you can use, with their default value :
 
 ::
 
-    FACTORY_NORMALIZE_FIELD_MAP = {}
-    FACTORY_FIELD_FAKER_MAP = {}
-    FACTORY_IGNORE_FIELDS = []
-    FACTORY_ROOT_DIR = 'model_factories'
-    FACTORY_IGNORE_NON_EDITABLE_FIELDS = True
+   FACTORY_NORMALIZE_FIELD_MAP = {}
+   FACTORY_FIELD_FAKER_MAP = {}
+   FACTORY_IGNORE_FIELDS = []
+   FACTORY_ROOT_DIR = 'model_factories'
+   FACTORY_IGNORE_NON_EDITABLE_FIELDS = True
 
 Todo
 ----
@@ -126,7 +130,7 @@ License
 
 The project is licensed under the MIT License.
 
-.. |django-factory-generator v1.0.1 on PyPi| image:: https://img.shields.io/badge/pypi-1.0.1-green.svg
+.. |django-factory-generator v1.0.4 on PyPi| image:: https://img.shields.io/badge/pypi-1.0.4-green.svg
    :target: https://pypi.python.org/pypi/django-factory-generator
 .. |MIT license| image:: https://img.shields.io/badge/licence-MIT-blue.svg
 .. |Stable| image:: https://img.shields.io/badge/status-stable-green.svg

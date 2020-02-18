@@ -1,4 +1,4 @@
-[![django-factory-generator v1.0.1 on PyPi](https://img.shields.io/badge/pypi-1.0.1-green.svg)](https://pypi.python.org/pypi/django-factory-generator)
+[![django-factory-generator v1.0.4 on PyPi](https://img.shields.io/badge/pypi-1.0.4-green.svg)](https://pypi.python.org/pypi/django-factory-generator)
 ![MIT license](https://img.shields.io/badge/licence-MIT-blue.svg)
 ![Stable](https://img.shields.io/badge/status-stable-green.svg)
 
@@ -8,6 +8,9 @@ Generate (factory_boy) Model Factory for each model of your Django app
 
 ## Changelog
 
++ 1.0.4 fix has_choices property for Django 3.0
++ 1.0.3 Remove useless print statements
++ 1.0.2 Add `PointFieldFaker` to support `PointField`. Refactor the way modules are imported on generated factories
 + 1.0.1 Add more accurate fakers for `BigIntegerField`, `IntegerField`, `PositiveIntegerField`, `PositiveSmallIntegerField` and `SmallIntegerField`
 + 1.0.0 Init project
 

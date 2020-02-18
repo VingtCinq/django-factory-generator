@@ -3,9 +3,9 @@ Generated using factory_generator {{version}}.
 """
 
 import factory
-{% if need_timezone %}
-from django.utils import timezone
-{% endif %}
+{% if imports %}
+{% for import_str in imports %}{{import_str}}
+{% endfor %}{% endif %}
 from {{model_module}} import {{model_name}}
 {% if choices %}
 {% for choice in choices %}{{choice}}

@@ -15,7 +15,7 @@ class FieldFaker:
     faker_class = ''
     faker_kwargs = []
     unquote_kwargs = []
-    need_timezone = False
+    imports = []
     template = "factory_generator/default.py-tpl"
 
     def __init__(self, model, field):
@@ -126,7 +126,7 @@ class DateFieldFaker(FieldFaker):
     faker_kwargs = ["provider", "end_datetime", "tzinfo"]
     unquote_kwargs = ["tzinfo"]
     provider = "date_time"
-    need_timezone = True
+    imports = ['django.utils.timezone']
 
     def get_end_datetime(self):
         return None
@@ -140,7 +140,7 @@ class DateTimeFieldFaker(FieldFaker):
     faker_kwargs = ["provider", "end_datetime", "tzinfo"]
     provider = "date_time"
     unquote_kwargs = ["tzinfo"]
-    need_timezone = True
+    imports = ['django.utils.timezone']
 
     def get_end_datetime(self):
         return None
@@ -169,7 +169,7 @@ class DurationFieldFaker(FieldFaker):
     faker_kwargs = ["provider", "end_datetime"]
     provider = "time_delta"
 
-    need_timezone = True
+    imports = ['django.utils.timezone']
 
     def get_end_datetime(self):
         return None
@@ -327,7 +327,7 @@ class TimeFieldFaker(FieldFaker):
     faker_kwargs = ["provider", "end_datetime"]
     provider = "time_object"
     end_datetime = None
-    need_timezone = True
+    imports = ['django.utils.timezone']
 
 
 class URLFieldFaker(FieldFaker):
@@ -340,6 +340,23 @@ class UUIDFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
     faker_kwargs = ["provider"]
     provider = "uuid4"
+
+
+class PointFieldFaker(FieldFaker):
+    faker_class = "factory.LazyFunction"
+    faker_kwargs = ["function"]
+    unquote_kwargs = ["function"]
+    imports = ['factory_generator.fields_faker.PointFieldFaker']
+
+    function = "PointFieldFaker.get_random_point"
+
+    @staticmethod
+    def get_random_point():
+        from django.contrib.gis.geos import Point
+        from faker import Faker
+        fake = Faker()
+        return Point(float(fake.longitude()), float(fake.latitude()))
+
 
 
 BASE_FIELD_FAKER_MAP = {
@@ -371,6 +388,7 @@ BASE_FIELD_FAKER_MAP = {
     "TimeField": "factory_generator.fields_faker.TimeFieldFaker",
     "URLField": "factory_generator.fields_faker.URLFieldFaker",
     "UUIDField": "factory_generator.fields_faker.UUIDFieldFaker",
+    "PointField": "factory_generator.fields_faker.PointFieldFaker",
 }
 
 def get_field_faker_map():
