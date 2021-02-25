@@ -183,6 +183,7 @@ class FactoryModelGenerator(PathMixin):
         self.model_filename = "{filename}.py".format(
             filename=self.model.__name__.lower())
         super(FactoryModelGenerator, self).__init__()
+        self.python_path = self.root_dir.replace("/", ".")
 
     @property
     def fields(self):
@@ -211,7 +212,7 @@ class FactoryModelGenerator(PathMixin):
         Get the context needed for the definition of the `__init__.py` file
         """
         module_path = "{root_dir}.{app_label}.{model_lower}".format(
-            root_dir=self.root_dir,
+            root_dir=self.python_path,
             app_label=self.model._meta.app_label,
             model_lower=self.model.__name__.lower()
         )
@@ -272,7 +273,7 @@ class FactoryModelGenerator(PathMixin):
         Get the context needed for the definition of the `[Model]Factory` class
         """
         factory_module_path = "{root_dir}.{app_label}.base.{model_lower}".format(
-            root_dir=self.root_dir,
+            root_dir=self.python_path,
             app_label=self.model._meta.app_label,
             model_lower=self.model.__name__.lower()
         )
