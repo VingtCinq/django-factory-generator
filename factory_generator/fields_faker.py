@@ -1,3 +1,4 @@
+import random
 from django.conf import settings
 from django.template.loader import render_to_string
 
