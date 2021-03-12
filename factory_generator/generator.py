@@ -389,11 +389,11 @@ class FactoryAppGenerator(PathMixin):
         Render the content of `__init__.py` file which imports all factories
         """
 
-        FACTORY_IGNORE__INIT_IMPORT = getattr(
-            settings, "FACTORY_IGNORE__INIT_IMPORT", False
+        FACTORY_IGNORE_INIT_IMPORT = getattr(
+            settings, "FACTORY_IGNORE_INIT_IMPORT", False
         )
 
-        if not FACTORY_IGNORE__INIT_IMPORT:
+        if not FACTORY_IGNORE_INIT_IMPORT:
             return render_to_string("factory_generator/app-init.py-tpl", context)
 
         return ""
