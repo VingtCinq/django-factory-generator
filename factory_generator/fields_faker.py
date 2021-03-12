@@ -1,3 +1,4 @@
+import random
 from django.conf import settings
 from django.template.loader import render_to_string
 
@@ -12,7 +13,8 @@ class FieldFaker:
     :unquote_kwargs - the kwargs that need to be displayed without quote
     :template - the template to use to render the Faker field
     """
-    faker_class = ''
+
+    faker_class = ""
     faker_kwargs = []
     unquote_kwargs = []
     imports = []
@@ -21,7 +23,7 @@ class FieldFaker:
     def __init__(self, model, field):
         self.model = model
         self.field = field
-        self.root_dir = getattr(settings, 'FACTORY_ROOT_DIR', 'model_factories')
+        self.root_dir = getattr(settings, "FACTORY_ROOT_DIR", "model_factories")
         super(FieldFaker, self).__init__()
 
     @property
@@ -30,11 +32,11 @@ class FieldFaker:
         Return the context needed to properly define the faker
         """
         return {
-            'faker_class': self.get_faker_class(),
-            'faker_kwargs': self.get_faker_kwargs(),
-            'field': self.field
+            "faker_class": self.get_faker_class(),
+            "faker_kwargs": self.get_faker_kwargs(),
+            "field": self.field,
         }
-    
+
     def render(self):
         return render_to_string(self.template, self.context)
 
@@ -46,7 +48,7 @@ class FieldFaker:
         Get kwargs for the faker instance
         """
         if len(self.faker_kwargs) == 0:
-            return ''
+            return ""
         kwargs = {}
         for kwarg in self.faker_kwargs:
             method = "get_{kwarg}".format(kwarg=kwarg)
@@ -56,24 +58,25 @@ class FieldFaker:
                 if hasattr(self, kwarg):
                     kwargs[kwarg] = getattr(self, kwarg)
                 else:
-                    raise ValueError('Missing property `{kwarg}` or method `get_{kwarg}`for `{class_name}`'.format(
-                        class_name=self.__class__.__name__,
-                        kwarg=kwarg
-                    ))
+                    raise ValueError(
+                        "Missing property `{kwarg}` or method `get_{kwarg}`for `{class_name}`".format(
+                            class_name=self.__class__.__name__, kwarg=kwarg
+                        )
+                    )
         arr = []
-        for (key,val) in kwargs.items():
+        for (key, val) in kwargs.items():
             if key in self.unquote_kwargs:
-                arr.append("{!s}={!s}".format(key,val))
+                arr.append("{!s}={!s}".format(key, val))
             else:
-                arr.append("{!s}={!r}".format(key,val))
-        return ', '.join(arr)
+                arr.append("{!s}={!r}".format(key, val))
+        return ", ".join(arr)
 
 
 class BigIntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
     faker_kwargs = ["provider", "min", "max"]
     provider = "random_int"
-    
+
     def get_min(self):
         return -9223372036854775808
 
@@ -116,9 +119,7 @@ class ChoiceFieldFaker(FieldFaker):
     provider = "random_element"
 
     def get_elements(self):
-        return "{field_name}_CHOICES".format(
-            field_name = self.field.name.upper()
-        )
+        return "{field_name}_CHOICES".format(field_name=self.field.name.upper())
 
 
 class DateFieldFaker(FieldFaker):
@@ -126,11 +127,11 @@ class DateFieldFaker(FieldFaker):
     faker_kwargs = ["provider", "end_datetime", "tzinfo"]
     unquote_kwargs = ["tzinfo"]
     provider = "date_time"
-    imports = ['django.utils.timezone']
+    imports = ["django.utils.timezone"]
 
     def get_end_datetime(self):
         return None
-    
+
     def get_tzinfo(self):
         return "timezone.get_current_timezone()"
 
@@ -140,11 +141,11 @@ class DateTimeFieldFaker(FieldFaker):
     faker_kwargs = ["provider", "end_datetime", "tzinfo"]
     provider = "date_time"
     unquote_kwargs = ["tzinfo"]
-    imports = ['django.utils.timezone']
+    imports = ["django.utils.timezone"]
 
     def get_end_datetime(self):
         return None
-    
+
     def get_tzinfo(self):
         return "timezone.get_current_timezone()"
 
@@ -169,7 +170,7 @@ class DurationFieldFaker(FieldFaker):
     faker_kwargs = ["provider", "end_datetime"]
     provider = "time_delta"
 
-    imports = ['django.utils.timezone']
+    imports = ["django.utils.timezone"]
 
     def get_end_datetime(self):
         return None
@@ -189,6 +190,7 @@ class FilePathFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
     faker_kwargs = ["provider"]
     provider = "file_path"
+
 
 class FloatFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
@@ -213,9 +215,7 @@ class ForeignKeyFaker(FieldFaker):
         to = self.field.remote_field.model.__name__
         app_label = self.field.remote_field.model._meta.app_label
         return "{root_dir}.{app_label}.{to}Factory".format(
-            root_dir=self.root_dir,
-            app_label=app_label,
-            to=to
+            root_dir=self.root_dir, app_label=app_label, to=to
         )
 
 
@@ -227,7 +227,7 @@ class IntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
     faker_kwargs = ["provider", "min", "max"]
     provider = "random_int"
-    
+
     def get_min(self):
         return -2147483648
 
@@ -240,12 +240,12 @@ class GenericIPAddressFieldFaker(FieldFaker):
     faker_kwargs = ["provider"]
 
     def get_provider(self):
-        if self.field.protocol == 'both':
-            return random.choice(['ipv4', 'ipv6'])
-        if self.field.protocol == 'IPv4':
-            return 'ipv4'
-        if self.field.protocol == 'IPv4':
-            return 'ipv6'
+        if self.field.protocol == "both":
+            return random.choice(["ipv4", "ipv6"])
+        if self.field.protocol == "IPv4":
+            return "ipv4"
+        if self.field.protocol == "IPv4":
+            return "ipv6"
 
 
 class ManyToManyFieldFaker(FieldFaker):
@@ -268,9 +268,7 @@ class OneToOneFieldFaker(FieldFaker):
         to = self.field.remote_field.model.__name__
         app_label = self.field.remote_field.model._meta.app_label
         return "{root_dir}.{app_label}.{to}Factory".format(
-            root_dir=self.root_dir,
-            app_label=app_label,
-            to=to
+            root_dir=self.root_dir, app_label=app_label, to=to
         )
 
 
@@ -278,7 +276,7 @@ class PositiveIntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
     faker_kwargs = ["provider", "min", "max"]
     provider = "random_int"
-    
+
     def get_min(self):
         return 0
 
@@ -290,7 +288,7 @@ class PositiveSmallIntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
     faker_kwargs = ["provider", "min", "max"]
     provider = "random_int"
-    
+
     def get_min(self):
         return 0
 
@@ -308,7 +306,7 @@ class SmallIntegerFieldFaker(FieldFaker):
     faker_class = "factory.Faker"
     faker_kwargs = ["provider", "min", "max"]
     provider = "random_int"
-    
+
     def get_min(self):
         return -32768
 
@@ -327,7 +325,7 @@ class TimeFieldFaker(FieldFaker):
     faker_kwargs = ["provider", "end_datetime"]
     provider = "time_object"
     end_datetime = None
-    imports = ['django.utils.timezone']
+    imports = ["django.utils.timezone"]
 
 
 class URLFieldFaker(FieldFaker):
@@ -346,7 +344,7 @@ class PointFieldFaker(FieldFaker):
     faker_class = "factory.LazyFunction"
     faker_kwargs = ["function"]
     unquote_kwargs = ["function"]
-    imports = ['factory_generator.fields_faker.PointFieldFaker']
+    imports = ["factory_generator.fields_faker.PointFieldFaker"]
 
     function = "PointFieldFaker.get_random_point"
 
@@ -354,9 +352,9 @@ class PointFieldFaker(FieldFaker):
     def get_random_point():
         from django.contrib.gis.geos import Point
         from faker import Faker
+
         fake = Faker()
         return Point(float(fake.longitude()), float(fake.latitude()))
-
 
 
 BASE_FIELD_FAKER_MAP = {
@@ -391,10 +389,12 @@ BASE_FIELD_FAKER_MAP = {
     "PointField": "factory_generator.fields_faker.PointFieldFaker",
 }
 
+
 def get_field_faker_map():
-    base_field_faker_map = getattr(settings, 'FACTORY_FIELD_FAKER_MAP', {})
+    base_field_faker_map = getattr(settings, "FACTORY_FIELD_FAKER_MAP", {})
     field_faker_map = BASE_FIELD_FAKER_MAP.copy()
     field_faker_map.update(base_field_faker_map)
     return field_faker_map
+
 
 FIELD_FAKER_MAP = get_field_faker_map()

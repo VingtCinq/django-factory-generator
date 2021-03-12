@@ -1,5 +1,5 @@
 """
-Generated using factory_generator {{version}}. 
+Generated using factory_generator {{version}}.
 """
 
 from {{ factory_module }} import {{ factory_base_name }}
