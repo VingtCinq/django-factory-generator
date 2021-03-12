@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class FactoryGeneratorConfig(AppConfig):
-    name = 'factory_generator'
+    name = "factory_generator"
